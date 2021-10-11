@@ -28,9 +28,9 @@ const SomeApp = {
       fetchStudentData() {
           fetch('/api/student/')
           .then( response => response.json() )
-          .then( (responseJson) => {
-              console.log(responseJson);
-              this.students = responseJson;
+          .then( (parsedJson) => {
+              console.log(parsonJson);
+              this.students = parsedJson;
           })
           .catch( (err) => {
               console.error(err);
