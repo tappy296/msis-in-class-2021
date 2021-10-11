@@ -11,7 +11,7 @@
     
     <script src="https://unpkg.com/vue@next"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-    <title>Hello, world!</title>
+    <title>Index</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -68,10 +68,12 @@
                     </tr>
                 </tbody>
             </table>
-
+            
+            <!-- "postNewOffer" data is to record function defined in index.js -->
             <form v-on:submit.prevent="postNewOffer">
               <div class="mb-3">
                 <label for="companyName" class="form-label">Company Name</label>
+                <!-- name the v-model variables same as SQL schema will help make life easier -->
                 <input type="text" v-model="offerForm.companyName"
                  class="form-control" id="companyName">
               </div>
