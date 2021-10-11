@@ -52,11 +52,14 @@ const SomeApp = {
                 console.error(error);
             });
         },
+        // line 55 creates the new method postNewOffer
         postNewOffer(evt) {
+        // line 58 posting the student ID from student
           this.offerForm.studentId = this.selectedStudent.id;        
           console.log("Posting:", this.offerForm);
           // alert("Posting!");
-  
+        
+        // line 63 fetches the information from the from and puts it into the php create page
           fetch('api/offer/create.php', {
               method:'POST',
               body: JSON.stringify(this.offerForm),
