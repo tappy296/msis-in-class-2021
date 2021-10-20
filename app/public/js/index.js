@@ -1,10 +1,12 @@
+
 const SomeApp = {
     data() {
       return {
         students: [],
         selectedStudent: null,
         offers: [],
-        offerForm: {}
+        offerForm: {},
+        selectedOffer: null
       }
     },
     computed: {},
@@ -51,14 +53,42 @@ const SomeApp = {
                 console.error(error);
             });
         },
-        // line 55 creates the new method postNewOffer
-        postNewOffer(evt) {
-        // line 58 posting the student ID from student
+        postOffer(evt) {
+            console.log ("Test:", this.selectedOffer);
+          if (this.selectedOffer) {
+              this.postEditOffer(evt);
+          } else {
+              this.postNewOffer(evt);
+          }
+        },
+        postEditOffer(evt) {
+          this.offerForm.id = this.selectedOffer.id;
           this.offerForm.studentId = this.selectedStudent.id;        
-          console.log("Posting:", this.offerForm);
-          // alert("Posting!");
-        
-        // line 63 fetches the information from the from and puts it into the php create page
+          
+          console.log("Editing!", this.offerForm);
+  
+          fetch('api/offer/update.php', {
+              method:'POST',
+              body: JSON.stringify(this.offerForm),
+              headers: {
+                "Content-Type": "application/json; charset=utf-8"
+              }
+            })
+            .then( response => response.json() )
+            .then( json => {
+              console.log("Returned from post:", json);
+              // TODO: test a result was returned!
+              this.offers = json;
+              
+              // reset the form
+              this.handleResetEdit();
+            });
+        },
+        postNewOffer(evt) {
+          this.offerForm.studentId = this.selectedStudent.id;        
+          
+          console.log("Creating!", this.offerForm);
+  
           fetch('api/offer/create.php', {
               method:'POST',
               body: JSON.stringify(this.offerForm),
@@ -73,8 +103,16 @@ const SomeApp = {
               this.offers = json;
               
               // reset the form
-              this.offerForm = {};
+              this.handleResetEdit();
             });
+        },
+        handleEditOffer(offer) {
+            this.selectedOffer = offer;
+            this.offerForm = Object.assign({}, this.selectedOffer);
+        },
+        handleResetEdit() {
+            this.selectedOffer = null;
+            this.offerForm = {};
         }
     },
     created() {
@@ -84,4 +122,3 @@ const SomeApp = {
   }
   
   Vue.createApp(SomeApp).mount('#offerApp');
-
